@@ -1,7 +1,6 @@
 package net.samitkumar.springboot_with_aws_lambda;
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;
-import com.amazonaws.serverless.proxy.internal.servlet.AwsHttpApiV2ProxyHttpServletRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.serverless.proxy.model.HttpApiV2ProxyRequest;
@@ -15,6 +14,7 @@ import java.io.OutputStream;
 
 public class LambdaHandler implements RequestStreamHandler {
     private static final SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
+    //TODO This handler is not working - fix it!
     private static final SpringBootLambdaContainerHandler<HttpApiV2ProxyRequest, AwsProxyResponse> handlerV2;
     static {
         try {
@@ -32,5 +32,6 @@ public class LambdaHandler implements RequestStreamHandler {
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
             throws IOException {
         handler.proxyStream(inputStream, outputStream, context);
+        handlerV2.proxyStream(inputStream, outputStream, context);
     }
 }
