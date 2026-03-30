@@ -14,7 +14,6 @@ import java.io.OutputStream;
 
 public class LambdaHandler implements RequestStreamHandler {
     private static final SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
-    //TODO This handler is not working - fix it!
     private static final SpringBootLambdaContainerHandler<HttpApiV2ProxyRequest, AwsProxyResponse> handlerV2;
     static {
         try {
@@ -31,7 +30,7 @@ public class LambdaHandler implements RequestStreamHandler {
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
             throws IOException {
-        //handler.proxyStream(inputStream, outputStream, context);
+        handler.proxyStream(inputStream, outputStream, context);
         handlerV2.proxyStream(inputStream, outputStream, context);
     }
 }
