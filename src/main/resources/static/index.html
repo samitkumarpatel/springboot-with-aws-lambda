@@ -5,8 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>::index::</title>
 </head>
-<body style="padding: 10px 10px">
+<body style="padding: 10px 10px;margin-left: 30px;margin-right: 30px;">
     <h1>Hello World</h1>
     <hr/>
+    <div id="app">
+        {{ message }}
+        <hr/>
+        <p>ping: {{ ping }}</p>
+        <p>router ping {{ router_ping }}</p>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        const { createApp, ref, onMounted } = Vue
+
+        createApp({
+            setup() {
+                const message = ref('Hello vue!')
+                const ping = ref('ping')
+                const router_ping = ref('router_ping')
+
+                const fetchPingData = async () => {
+                    try {
+                        const response = await axios.get('/ping')
+                        ping.value = response.data
+                    } catch (error) {
+                        console.error('Error fetching data:', error)
+                        ping.value = 'Failed to fetch data'
+                    }
+                }
+
+                const fetchRouterPingData = async () => {
+                    try {
+                        const response = await axios.get('/functional/ping')
+                        router_ping.value = response.data
+                    } catch (error) {
+                        console.error('Error fetching data:', error)
+                        router_ping.value = 'Failed to fetch data'
+                    }
+                }
+
+                onMounted(() => {
+                    fetchPingData()
+                    fetchRouterPingData()
+                })
+
+                return {
+                    message, ping, router_ping
+                }
+            }
+        }).mount('#app')
+    </script>
 </body>
 </html>
