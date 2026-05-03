@@ -7,6 +7,7 @@ on:
 env:
   AWS_REGION: eu-north-1
   ECR_REPOSITORY: ${{ github.event.repository.name }}
+  FUNCTION_NAME: ${{ github.event.repository.name }}
   IMAGE_TAG: ${{ github.run_id }}
 
 jobs:
@@ -64,3 +65,11 @@ jobs:
           echo "| **Repository** | ${{ env.ECR_REPOSITORY }} |" >> $GITHUB_STEP_SUMMARY
           echo "| **Image Tag** | ${{ env.IMAGE_TAG }} |" >> $GITHUB_STEP_SUMMARY
           echo "| **Image URI** | ${{ steps.build-push.outputs.image }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Deploy to AWS Lambda
+        if: success()
+        uses: aws-actions/aws-lambda-deploy@v1.1.0
+        with:
+          function-name: ${{ env.FUNCTION_NAME }}
+          package-type: Image
+          image-uri: ${{ steps.build-push.outputs.image }}
