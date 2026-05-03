@@ -1,3 +1,8 @@
 spring:
   application:
     name: springboot-with-aws-lambda
+  security:
+    user:
+      name: user
+      password: password
+      roles: USER
