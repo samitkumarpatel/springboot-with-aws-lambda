@@ -4,20 +4,19 @@
 ```shell
 ./mvnw clean install
 
-docker buildx build \
-  --platform linux/amd64 \
-  --provenance=false \
-  --push \
-  -t $ECR_REGISTRY/springboot-with-aws-lambda:main
+docker buildx build -t springboot-with-aws-lambda .
 ```
 
-### Lambda configuration
-Lambda configuration Not needed - as it's already describe in the docker file and the code has a handler to deal with what type of trigger it can support like http or gateway.
+### Run & Test
+```shell
 
-### Deploy in aws lambda
-Deploy it via `aws cli`, `aws web` ,`github action` or `terraform` or any other way. 
+docker run --rm -p 9000:8080 springboot-with-aws-lambda
 
-### Configure API Gateway to expose this lambda as a REST API
+curl "http://localhost:9000/2015-03-31/functions/function/invocations" \
+  -d '{"version":"2.0","routeKey":"GET /ping","rawPath":"/ping","requestContext":{"http":{"method":"GET","path":"/ping"}}}'
 
+# OR
+python3 local-proxy/http-proxy.py
 
-### Test the API
+In the browser or any other http client visit `http://localhost:8080/ping`
+```
