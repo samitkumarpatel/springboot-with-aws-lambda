@@ -6,3 +6,14 @@ spring:
       name: user
       password: password
       roles: USER
+  cloud:
+    aws:
+      credentials:
+        secret-key: ${AWS_SECRET_KEY}
+        access-key: ${AWS_ACCESS_KEY}
+      region:
+        static: eu-north-1
+logging:
+  level:
+    org.springframework.security: TRACE
+    web: debug

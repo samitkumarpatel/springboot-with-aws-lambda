@@ -105,52 +105,6 @@ resource "aws_cloudwatch_log_group" "this" {
 }
 
 # ---------------------------------------------------------------------------
-# DynamoDB — session store
-# ---------------------------------------------------------------------------
-
-resource "aws_dynamodb_table" "sessions" {
-  name         = "spring-sessions"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "pk"
-  range_key    = "sk"
-
-  attribute {
-    name = "pk"
-    type = "S"
-  }
-
-  attribute {
-    name = "sk"
-    type = "S"
-  }
-
-  ttl {
-    attribute_name = "ttl"
-    enabled        = true
-  }
-}
-
-resource "aws_iam_role_policy" "dynamodb_sessions" {
-  name = "dynamodb-sessions"
-  role = aws_iam_role.this.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Effect = "Allow"
-      Action = [
-        "dynamodb:GetItem",
-        "dynamodb:PutItem",
-        "dynamodb:DeleteItem",
-        "dynamodb:UpdateItem",
-        "dynamodb:Query"
-      ]
-      Resource = aws_dynamodb_table.sessions.arn
-    }]
-  })
-}
-
-# ---------------------------------------------------------------------------
 # Lambda Function URL
 # ---------------------------------------------------------------------------
 
