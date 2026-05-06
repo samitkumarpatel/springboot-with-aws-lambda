@@ -47,3 +47,5 @@ override.tf.json
 *_override.tf.json
 plan.out
 *.out
+.venv
+.venv/**

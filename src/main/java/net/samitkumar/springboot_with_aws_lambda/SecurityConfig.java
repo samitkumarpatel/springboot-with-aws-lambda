@@ -1,16 +1,18 @@
 package net.samitkumar.springboot_with_aws_lambda;
 
-import io.awspring.cloud.dynamodb.DynamoDbTableNameResolver;
 import io.awspring.cloud.dynamodb.DynamoDbTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 import org.springframework.session.MapSession;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
@@ -35,25 +37,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true))
+                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults())
+                .logout(Customizer.withDefaults())
                 .build();
-    }
-
-    @Bean
-    DynamoDbTableNameResolver tableNameResolver() {
-        return new DynamoDbTableNameResolver() {
-            @Override
-            @NonNull
-            public <T> String resolve(@NonNull Class<T> clazz) {
-                return clazz == SessionEntity.class ? "spring-sessions"
-                        : clazz.getSimpleName().replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
-            }
-        };
     }
 }
 

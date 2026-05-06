@@ -1,22 +1,23 @@
 # springboot-with-aws-lambda
 
-### Build
-```shell
-./mvnw clean install
+This is how you can run a Spring Boot application in AWS Lambda using the AWS Serverless Java Container library. This example uses the `Spring Web MVC framework`, but you can also use `Spring WebFlux` or any other supported framework with `Spring Security`.
 
-docker buildx build -t springboot-with-aws-lambda .
+### Build
+
+```shell
+./mvnw clean install && \
+  docker buildx build -t springboot-with-aws-lambda .
 ```
 
 ### Run & Test
+
 ```shell
 
-docker run --rm -p 9000:8080 springboot-with-aws-lambda
+docker run --rm -p 9000:8080 -e AWS_SECRET_KEY=XXXX -e AWS_ACCESS_KEY=XXXXX springboot-with-aws-lambda
 
-curl "http://localhost:9000/2015-03-31/functions/function/invocations" \
-  -d '{"version":"2.0","routeKey":"GET /ping","rawPath":"/ping","requestContext":{"http":{"method":"GET","path":"/ping"}}}'
-
-# OR
 python3 local-proxy/http-proxy.py
 
-In the browser or any other http client visit `http://localhost:8080/ping`
+In the browser or any other http client visit `http://localhost:8080`
+username: user
+password: password
 ```
