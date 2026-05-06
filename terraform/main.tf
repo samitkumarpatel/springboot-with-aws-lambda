@@ -82,6 +82,8 @@ resource "aws_iam_role_policy_attachment" "logs" {
 # ---------------------------------------------------------------------------
 # Lambda
 # ---------------------------------------------------------------------------
+variable "aws_secret_key" {}
+variable "aws_access_key" {}
 
 resource "aws_lambda_function" "this" {
   function_name = local.name
