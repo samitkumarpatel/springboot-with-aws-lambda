@@ -13,6 +13,9 @@ spring:
         access-key: ${AWS_ACCESS_KEY}
       region:
         static: eu-north-1
+  main:
+    lazy-initialization: true
+
 logging:
   level:
     org.springframework.security: TRACE

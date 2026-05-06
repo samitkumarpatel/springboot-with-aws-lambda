@@ -7,6 +7,13 @@
 </head>
 <body style="padding: 10px 10px;margin-left: 30px;margin-right: 30px;">
     <h1>Hello World</h1>
+    <form id="logout-form" action="/logout" method="post" style="display:inline">
+        <input type="hidden" name="_csrf" id="csrf-token" value=""/>
+        <button type="submit"
+                style="background:#c0392b;color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:0.9rem">
+            Sign out
+        </button>
+    </form>
     <hr/>
     <div id="app">
         {{ message }}
@@ -49,6 +56,10 @@
                 onMounted(() => {
                     fetchPingData()
                     fetchRouterPingData()
+                    // Populate CSRF token for logout form
+                    axios.get('/csrf').then(r => {
+                        document.getElementById('csrf-token').value = r.data.token
+                    })
                 })
 
                 return {
