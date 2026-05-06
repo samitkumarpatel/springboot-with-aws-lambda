@@ -62,12 +62,12 @@ class SecurityWebController {
 }
 
 @Component
-class DynamodbSessionStore implements SessionRepository<MapSession> {
-    private static final Logger log = LoggerFactory.getLogger(DynamodbSessionStore.class);
+class SessionStoreDynamoDb implements SessionRepository<MapSession> {
+    private static final Logger log = LoggerFactory.getLogger(SessionStoreDynamoDb.class);
 
     private final DynamoDbTemplate dynamoDbTemplate;
 
-    DynamodbSessionStore(DynamoDbTemplate dynamoDbTemplate) {
+    SessionStoreDynamoDb(DynamoDbTemplate dynamoDbTemplate) {
         this.dynamoDbTemplate = dynamoDbTemplate;
     }
 
