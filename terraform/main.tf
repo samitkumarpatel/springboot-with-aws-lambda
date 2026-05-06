@@ -95,7 +95,10 @@ resource "aws_lambda_function" "this" {
   architectures = ["x86_64"]
 
   environment {
-    variables = {}
+    variables = {
+      SECRET_KEY = var.aws_secret_key
+      ACCESS_KEY = var.aws_access_key
+    }
   }
 }
 
