@@ -34,6 +34,13 @@ import java.util.Map;
 @EnableSpringHttpSession
 public class SecurityConfig {
 
+/*    @Bean
+    Customizer<HttpSecurity> httpSecurity() {
+        return http -> http
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/login").permitAll())
+                .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true));
+    }*/
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
