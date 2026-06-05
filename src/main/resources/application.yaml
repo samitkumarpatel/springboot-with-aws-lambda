@@ -8,11 +8,9 @@ spring:
       roles: USER
   cloud:
     aws:
-      credentials:
+#      credentials:
 #        profile:
 #          name: default
-        secret-key: ${SECRET_KEY}
-        access-key: ${ACCESS_KEY}
       region:
         static: eu-north-1
   main:

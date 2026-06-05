@@ -26,6 +26,9 @@ locals {
 # ECR
 # ---------------------------------------------------------------------------
 
+variable "aws_secret_key" {}
+variable "aws_access_key" {}
+
 resource "aws_ecr_repository" "this" {
   name                 = local.name
   image_tag_mutability = "MUTABLE"
@@ -100,8 +103,6 @@ resource "aws_iam_role_policy_attachment" "logs" {
 # ---------------------------------------------------------------------------
 # Lambda
 # ---------------------------------------------------------------------------
-variable "aws_secret_key" {}
-variable "aws_access_key" {}
 
 resource "aws_lambda_function" "this" {
   function_name = local.name
@@ -122,9 +123,9 @@ resource "aws_lambda_function" "this" {
   }
   depends_on = [null_resource.this]
 
-    lifecycle {
-      ignore_changes = [image_uri]
-    }
+  lifecycle {
+    ignore_changes = [image_uri]
+  }
 }
 
 resource "aws_cloudwatch_log_group" "this" {
