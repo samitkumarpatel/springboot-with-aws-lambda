@@ -29,6 +29,7 @@ locals {
 resource "aws_ecr_repository" "this" {
   name                 = local.name
   image_tag_mutability = "MUTABLE"
+  force_delete         = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -50,6 +51,23 @@ resource "aws_ecr_lifecycle_policy" "this" {
       action = { type = "expire" }
     }]
   })
+}
+
+resource "null_resource" "this" {
+  triggers = {
+    ecr_repo_url = aws_ecr_repository.this.repository_url
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      aws ecr get-login-password --region ${var.aws_region} \
+        | docker login --username AWS --password-stdin ${aws_ecr_repository.this.registry_id}.dkr.ecr.${var.aws_region}.amazonaws.com
+
+      docker pull public.ecr.aws/lambda/java:25
+      docker tag  public.ecr.aws/lambda/java:25 ${aws_ecr_repository.this.repository_url}:25
+      docker push ${aws_ecr_repository.this.repository_url}:25
+    EOT
+  }
 }
 
 # ---------------------------------------------------------------------------
@@ -89,7 +107,7 @@ resource "aws_lambda_function" "this" {
   function_name = local.name
   role          = aws_iam_role.this.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.this.repository_url}:latest"
+  image_uri     = "${aws_ecr_repository.this.repository_url}:25"
 
   memory_size = 512
   timeout     = 30
@@ -102,6 +120,11 @@ resource "aws_lambda_function" "this" {
       ACCESS_KEY = var.aws_access_key
     }
   }
+  depends_on = [null_resource.this]
+
+    lifecycle {
+      ignore_changes = [image_uri]
+    }
 }
 
 resource "aws_cloudwatch_log_group" "this" {

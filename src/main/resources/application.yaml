@@ -9,8 +9,9 @@ spring:
   cloud:
     aws:
       credentials:
-        secret-key: ${SECRET_KEY}
-        access-key: ${ACCESS_KEY}
+        profile: default
+      #secret-key: ${SECRET_KEY}
+      #access-key: ${ACCESS_KEY}
       region:
         static: eu-north-1
   main:
