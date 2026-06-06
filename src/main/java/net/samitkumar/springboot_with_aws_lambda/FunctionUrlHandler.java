@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class FunctionUrlHandler implements RequestStreamHandler {
-    private static SpringBootLambdaContainerHandler<HttpApiV2ProxyRequest, AwsProxyResponse> handler;
+    private static final SpringBootLambdaContainerHandler<HttpApiV2ProxyRequest, AwsProxyResponse> handler;
     static {
         try {
             handler = SpringBootLambdaContainerHandler.getHttpApiV2ProxyHandler(SpringbootWithAwsLambdaApplication.class);

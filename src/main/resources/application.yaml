@@ -13,6 +13,9 @@ spring:
 #          name: default
       region:
         static: eu-north-1
+      credentials:
+        secret-key: ${SECRET_KEY}
+        access-key: ${ACCESS_KEY}
   main:
     lazy-initialization: true
 

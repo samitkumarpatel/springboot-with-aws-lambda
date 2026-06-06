@@ -1,8 +1,7 @@
 package net.samitkumar.springboot_with_aws_lambda;
 
 import io.awspring.cloud.dynamodb.DynamoDbTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -69,8 +68,8 @@ class SecurityWebController {
 }
 
 @Component
+@Slf4j
 class SessionStoreDynamoDb implements SessionRepository<MapSession> {
-    private static final Logger log = LoggerFactory.getLogger(SessionStoreDynamoDb.class);
 
     private final DynamoDbTemplate dynamoDbTemplate;
 

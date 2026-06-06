@@ -13,7 +13,7 @@ This is how you can run a Spring Boot application in AWS Lambda using the AWS Se
 
 ```shell
 
-docker run --rm -p 9000:8080 -e AWS_SECRET_KEY=XXXX -e AWS_ACCESS_KEY=XXXXX springboot-with-aws-lambda
+docker run --rm -p 9000:8080 -e SECRET_KEY=$AWS_SECRET_ACCESS_KEY -e ACCESS_KEY=$AWS_ACCESS_KEY_ID springboot-with-aws-lambda
 
 python3 local-proxy/http-proxy.py
 
