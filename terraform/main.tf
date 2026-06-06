@@ -26,9 +26,6 @@ locals {
 # ECR
 # ---------------------------------------------------------------------------
 
-variable "aws_secret_key" {}
-variable "aws_access_key" {}
-
 resource "aws_ecr_repository" "this" {
   name                 = local.name
   image_tag_mutability = "MUTABLE"
@@ -115,12 +112,6 @@ resource "aws_lambda_function" "this" {
 
   architectures = ["x86_64"]
 
-  environment {
-    variables = {
-      SECRET_KEY = var.aws_secret_key
-      ACCESS_KEY = var.aws_access_key
-    }
-  }
   depends_on = [null_resource.this]
 
   lifecycle {
